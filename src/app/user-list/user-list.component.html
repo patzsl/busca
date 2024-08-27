@@ -1,0 +1,129 @@
+<div class="container">
+  <input
+    [formControl]="control"
+    placeholder="Search users..."
+    (keyup)="onKeyUp()"
+    class="search-bar"
+  />
+  <div class="btn-group">
+    <button class="btn-menu" [matMenuTriggerFor]="filterMenu">
+      <svg
+        data-id="8"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="mr-2 h-4 w-4"
+      >
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+      </svg>
+      Filtrar por: {{ filterLabel }}
+    </button>
+
+    <button class="btn-menu" [matMenuTriggerFor]="sortMenu">
+      <svg
+        data-id="17"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="mr-2 h-4 w-4"
+      >
+        <line x1="10" x2="21" y1="6" y2="6"></line>
+        <line x1="10" x2="21" y1="12" y2="12"></line>
+        <line x1="10" x2="21" y1="18" y2="18"></line>
+        <path d="M4 6h1v4"></path>
+        <path d="M4 10h2"></path>
+        <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path>
+      </svg>
+      Ordenar por: {{ sortLabel }}
+    </button>
+
+    <div class="btn-group__viewMode">
+      <button class="btn-menu" (click)="toggleViewMode('list')">
+        <svg
+          data-id="23"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-5 w-5"
+        >
+          <line x1="8" x2="21" y1="6" y2="6"></line>
+          <line x1="8" x2="21" y1="12" y2="12"></line>
+          <line x1="8" x2="21" y1="18" y2="18"></line>
+          <line x1="3" x2="3.01" y1="6" y2="6"></line>
+          <line x1="3" x2="3.01" y1="12" y2="12"></line>
+          <line x1="3" x2="3.01" y1="18" y2="18"></line>
+        </svg>
+      </button>
+      <button class="btn-menu" (click)="toggleViewMode('grid')">
+        <svg
+          data-id="25"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-5 w-5"
+        >
+          <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+          <rect width="7" height="7" x="3" y="14" rx="1"></rect>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-menu #filterMenu="matMenu" panelClass="custom-menu">
+  <button mat-menu-item (click)="setFilterBy('name')">Nome</button>
+  <button mat-menu-item (click)="setFilterBy('whatsapp')">Whatsapp</button>
+  <button mat-menu-item (click)="setFilterBy('instagram')">
+    &#64;Instagram
+  </button>
+</mat-menu>
+
+<mat-menu #sortMenu="matMenu" panelClass="custom-menu">
+  <button mat-menu-item (click)="setSortBy('name')">Alfabética</button>
+  <button mat-menu-item (click)="setSortBy('id')">Cronológica</button>
+</mat-menu>
+
+<ul [class]="viewMode">
+  @for (user of filteredUsers(); track user.name) {
+  <li style="list-style: none;">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Nome: {{ user.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>WhatsApp: ({{user.whatsapp | slice:0:3}}) {{user.whatsapp | slice:4:6}}{{user.whatsapp | slice:6:12}}</p>
+        <p>Instagram: {{ user.instagram }}</p>
+        <p>E-mail: {{ user.email }}</p>
+      </mat-card-content>
+    </mat-card>
+  </li>
+  } @empty {
+  <li>Não há itens.</li>
+  }
+</ul>
